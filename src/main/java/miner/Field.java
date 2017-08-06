@@ -92,6 +92,9 @@ public class Field {
      * Вывод поля на экран
      */
     static void outField(Field field) {
+        System.out.println("mines = " + field.getMines() + "\nsizeX = " + field.getSizeX() +
+                "\nsizeY = " + field.getSizeY() + "\n");
+
         for (int y = 0; y < field.getSizeY(); y++) {
             for (int x = 0; x < field.getSizeX(); x++) {
                 if (field.getCells()[x][y] == 9) {
