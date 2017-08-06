@@ -118,8 +118,8 @@ public class Field {
      * Вывод поля на экран
      */
     static void outField(Field field) {
-        System.out.println("mines = " + field.getMines() + "\nsizeX = " + (field.getSizeX() - 1) +
-                "\nsizeY = " + (field.getSizeY() - 1) + "\n");
+        System.out.println("mines = " + field.getMines() + "\nsizeX = " + (field.getSizeX() - 2) +
+                "\nsizeY = " + (field.getSizeY() - 2) + "\n");
 
         for (int y = 1; y < field.getSizeY() - 1; y++) {
             for (int x = 1; x < field.getSizeX() - 1; x++) {
