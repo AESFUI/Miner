@@ -123,12 +123,27 @@ public class Field {
 
         for (int y = 1; y < field.getSizeY() - 1; y++) {
             for (int x = 1; x < field.getSizeX() - 1; x++) {
-                if (field.getCells()[x][y] == 9) {
-                    System.out.print("*" + " ");
-                } else if (field.getCells()[x][y] == 0) {
+                int cell = field.getCells()[x][y];
+                if (cell == 9) {
+                    System.out.print("\033[30m" + "¤" + " ");
+                } else if (cell == 0) {
                     System.out.print(" " + " ");
-                } else {
-                    System.out.print(field.getCells()[x][y] + " ");
+                } else if (cell == 1){
+                    System.out.print("\033[34m" + cell + " ");
+                } else if (cell == 2){
+                    System.out.print("\033[32m" + cell + " ");
+                } else if (cell == 3){
+                    System.out.print("\033[31m" + cell + "\033[22m ");
+                } else if (cell == 4){
+                    System.out.print("\033[35m" + cell + " ");
+                } else if (cell == 5){
+                    System.out.print("\033[36m" + cell + " ");
+                } else if (cell == 6){
+                    System.out.print("\033[33;1m" + cell + " ");
+                } else if (cell == 7){
+                    System.out.print("\033[30m" + cell + " ");
+                } else if (cell == 8){
+                    System.out.print("\033[31;1m" + cell + " ");
                 }
             }
             System.out.println();
