@@ -1,3 +1,5 @@
+package miner;
+
 import java.util.Date;
 import java.util.Random;
 
@@ -9,17 +11,17 @@ public class Field {
     private int sizeX;
     private int sizeY;
     private int mines;
-    private int field[][];
+    private int cells[][];
 
 
     private Field(int sizeX, int sizeY, int mines) {
         this.sizeX = sizeX;
         this.sizeY = sizeY;
         this.mines = mines;
-        this.field = new int [sizeX][sizeY];
+        this.cells = new int [sizeX][sizeY];
     }
 
-    public int getSizeX() {
+    private int getSizeX() {
         return sizeX;
     }
 
@@ -27,7 +29,7 @@ public class Field {
         this.sizeX = sizeX;
     }
 
-    public int getSizeY() {
+    private int getSizeY() {
         return sizeY;
     }
 
@@ -35,7 +37,7 @@ public class Field {
         this.sizeY = sizeY;
     }
 
-    public int getMines() {
+    private int getMines() {
         return mines;
     }
 
@@ -43,18 +45,18 @@ public class Field {
         this.mines = mines;
     }
 
-    public int[][] getField() {
-        return field;
+    private int[][] getCells() {
+        return cells;
     }
 
-    public void setField(int[][] field) {
-        this.field = field;
+    public void setCells(int[][] cells) {
+        this.cells = cells;
     }
 
     /**
      * Создание объекта поля
      */
-    public Field createField(int sizeX, int sizeY, int mines) throws Exception {
+    static Field createField(int sizeX, int sizeY, int mines) throws Exception {
         if (sizeX < 2 && sizeY < 2) {
             throw new Exception("Недопустимый размер поля!\n" +
             "sizeX = " + sizeX + "\nsizeY = " + sizeY);
@@ -68,16 +70,33 @@ public class Field {
     /**
      * Наполнение поля минами со значением "9"
      */
-    private void fillByMines(Field field) {
+    private static void fillByMines(Field field) {
         Date dateForRandom = new Date();
         final Random random = new Random(dateForRandom.getTime());
+
+        for (int m = field.getMines(); m > 0;) {
+            int x = random.nextInt(field.getSizeX());
+            int y = random.nextInt(field.getSizeY());
+            if (field.cells[x][y] != 9) {
+                field.cells[x][y] = 9;
+                m--;
+            }
+        }
     }
 
-    public void outField(Field field) {
-        for (int y = 0; y < field.getSizeY(); y++)
+    /**
+     * Вывод поля на экран
+     */
+    static void outField(Field field) {
+        for (int y = 0; y < field.getSizeY(); y++) {
             for (int x = 0; x < field.getSizeX(); x++) {
-                System.out.print(field.getField()[y][x] + " ");
+                if (field.getCells()[x][y] == 9) {
+                    System.out.print("*" + " ");
+                } else {
+                    System.out.print(field.getCells()[x][y] + " ");
+                }
             }
-        System.out.println();
+            System.out.println();
+        }
     }
 }
