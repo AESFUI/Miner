@@ -61,6 +61,10 @@ public class Field {
             throw new Exception("Недопустимый размер поля!\n" +
             "sizeX = " + sizeX + "\nsizeY = " + sizeY);
         }
+        if (mines < 1 || mines > (sizeX * sizeY)) {
+            throw new Exception("Недопустимое количество мин!\n" +
+                    "mines = " + mines + "\nsizeX = " + sizeX + "\nsizeY = " + sizeY);
+        }
 
         Field field = new Field(sizeX, sizeY, mines);
         fillByMines(field);

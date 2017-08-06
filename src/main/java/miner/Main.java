@@ -8,7 +8,7 @@ import static miner.Field.outField;
  */
 public class Main {
     public static void main(String[] args) throws Exception {
-        Field field = createField(5, 6, 7);
+        Field field = createField(5, 5, 3);
         outField(field);
     }
 }
