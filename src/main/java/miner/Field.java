@@ -59,14 +59,15 @@ public class Field {
     static Field createField(int sizeX, int sizeY, int mines) throws Exception {
         if (sizeX < 2 && sizeY < 2) {
             throw new Exception("Недопустимый размер поля!\n" +
-            "sizeX = " + sizeX + "\nsizeY = " + sizeY);
+            "sizeX = " + (sizeX - 1) + "\nsizeY = " + (sizeY - 1));
         }
         if (mines < 1 || mines > (sizeX * sizeY)) {
             throw new Exception("Недопустимое количество мин!\n" +
-                    "mines = " + mines + "\nsizeX = " + sizeX + "\nsizeY = " + sizeY);
+                    "mines = " + mines + "\nsizeX = " + (sizeX - 1) + "\nsizeY = " + (sizeY - 1));
         }
 
-        Field field = new Field(sizeX, sizeY, mines);
+        //поле для удобства манипуляций будет с невидимой границей шириной 1 клетка
+        Field field = new Field(sizeX + 2 , sizeY + 2, mines);
         fillByMines(field);
         return field;
     }
@@ -79,11 +80,36 @@ public class Field {
         final Random random = new Random(dateForRandom.getTime());
 
         for (int m = field.getMines(); m > 0;) {
-            int x = random.nextInt(field.getSizeX());
-            int y = random.nextInt(field.getSizeY());
-            if (field.cells[x][y] != 9) {
+            int x = random.nextInt(field.getSizeX() - 1);
+            int y = random.nextInt(field.getSizeY() - 1);
+            if (x > 0 && y > 0 && field.cells[x][y] != 9) {
                 field.cells[x][y] = 9;
                 m--;
+            }
+        }
+
+        //outField(field);
+
+        calculatingMines(field);
+    }
+
+    /**
+     * Расчёт количества мин для каждой клетки
+     **/
+    private static void calculatingMines(Field field) {
+        for (int y = 1; y < field.getSizeY() - 1; y++) {
+            for (int x = 1; x < field.getSizeX() - 1; x++) {
+                if (field.getCells()[x][y] != 9) {
+                    int minesAround = 0;
+                    for (int yShift = -1; yShift < 2; yShift++) {
+                        for (int xShift = -1; xShift < 2; xShift++) {
+                            if (field.getCells()[x + xShift][y + yShift] == 9) {
+                                minesAround++;
+                            }
+                        }
+                    }
+                    field.getCells()[x][y] = minesAround;
+                }
             }
         }
     }
@@ -92,13 +118,15 @@ public class Field {
      * Вывод поля на экран
      */
     static void outField(Field field) {
-        System.out.println("mines = " + field.getMines() + "\nsizeX = " + field.getSizeX() +
-                "\nsizeY = " + field.getSizeY() + "\n");
+        System.out.println("mines = " + field.getMines() + "\nsizeX = " + (field.getSizeX() - 1) +
+                "\nsizeY = " + (field.getSizeY() - 1) + "\n");
 
-        for (int y = 0; y < field.getSizeY(); y++) {
-            for (int x = 0; x < field.getSizeX(); x++) {
+        for (int y = 1; y < field.getSizeY() - 1; y++) {
+            for (int x = 1; x < field.getSizeX() - 1; x++) {
                 if (field.getCells()[x][y] == 9) {
                     System.out.print("*" + " ");
+                } else if (field.getCells()[x][y] == 0) {
+                    System.out.print(" " + " ");
                 } else {
                     System.out.print(field.getCells()[x][y] + " ");
                 }

@@ -8,7 +8,14 @@ import static miner.Field.outField;
  */
 public class Main {
     public static void main(String[] args) throws Exception {
-        Field field = createField(5, 5, 3);
+        Field field = createField(10, 10, 10);
         outField(field);
+    }
+
+    /**
+     * Вывод статистики минирования
+     **/
+    public static void outStat() {
+
     }
 }
