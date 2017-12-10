@@ -8,8 +8,9 @@ import static miner.Field.outField;
  */
 public class Main {
     public static void main(String[] args) throws Exception {
-        Field field = createField(10, 10, 10);
-        outField(field);
+        Field field = createField(10, 10, 40);
+        //outField(field);
+        System.out.println(field);
     }
 
     /**

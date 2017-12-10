@@ -18,7 +18,7 @@ public class Field {
         this.sizeX = sizeX;
         this.sizeY = sizeY;
         this.mines = mines;
-        this.cells = new int [sizeX][sizeY];
+        this.cells = new int[sizeX][sizeY];
     }
 
     private int getSizeX() {
@@ -59,7 +59,7 @@ public class Field {
     static Field createField(int sizeX, int sizeY, int mines) throws Exception {
         if (sizeX < 2 && sizeY < 2) {
             throw new Exception("Недопустимый размер поля!\n" +
-            "sizeX = " + (sizeX - 1) + "\nsizeY = " + (sizeY - 1));
+                    "sizeX = " + (sizeX - 1) + "\nsizeY = " + (sizeY - 1));
         }
         if (mines < 1 || mines > (sizeX * sizeY)) {
             throw new Exception("Недопустимое количество мин!\n" +
@@ -67,7 +67,7 @@ public class Field {
         }
 
         //поле для удобства манипуляций будет с невидимой границей шириной 1 клетка
-        Field field = new Field(sizeX + 2 , sizeY + 2, mines);
+        Field field = new Field(sizeX + 2, sizeY + 2, mines);
         fillByMines(field);
         return field;
     }
@@ -79,7 +79,7 @@ public class Field {
         Date dateForRandom = new Date();
         final Random random = new Random(dateForRandom.getTime());
 
-        for (int m = field.getMines(); m > 0;) {
+        for (int m = field.getMines(); m > 0; ) {
             int x = random.nextInt(field.getSizeX() - 1);
             int y = random.nextInt(field.getSizeY() - 1);
             if (x > 0 && y > 0 && field.cells[x][y] != 9) {
@@ -118,9 +118,6 @@ public class Field {
      * Вывод поля на экран
      */
     static void outField(Field field) {
-        System.out.println("mines = " + field.getMines() + "\nsizeX = " + (field.getSizeX() - 2) +
-                "\nsizeY = " + (field.getSizeY() - 2) + "\n");
-
         for (int y = 1; y < field.getSizeY() - 1; y++) {
             for (int x = 1; x < field.getSizeX() - 1; x++) {
                 int cell = field.getCells()[x][y];
@@ -128,25 +125,86 @@ public class Field {
                     System.out.print("\033[30m" + "¤" + " ");
                 } else if (cell == 0) {
                     System.out.print(" " + " ");
-                } else if (cell == 1){
+                } else if (cell == 1) {
                     System.out.print("\033[34m" + cell + " ");
-                } else if (cell == 2){
+                } else if (cell == 2) {
                     System.out.print("\033[32m" + cell + " ");
-                } else if (cell == 3){
+                } else if (cell == 3) {
                     System.out.print("\033[31m" + cell + "\033[22m ");
-                } else if (cell == 4){
+                } else if (cell == 4) {
                     System.out.print("\033[35m" + cell + " ");
-                } else if (cell == 5){
+                } else if (cell == 5) {
                     System.out.print("\033[36m" + cell + " ");
-                } else if (cell == 6){
+                } else if (cell == 6) {
                     System.out.print("\033[33;1m" + cell + " ");
-                } else if (cell == 7){
+                } else if (cell == 7) {
                     System.out.print("\033[30m" + cell + " ");
-                } else if (cell == 8){
+                } else if (cell == 8) {
                     System.out.print("\033[31;1m" + cell + " ");
                 }
             }
             System.out.println();
         }
+    }
+
+    /**
+     * Метод проверяет принадлежность клетки полю
+     *
+     * @param field поле
+     * @param x     координата по горизонтали
+     * @param y     координата по вертикали
+     * @return
+     */
+    Boolean isInField(Field field, int x, int y) {
+        if (x > 0 & x < field.sizeX & y > 0 & y < field.sizeY)
+            return true;
+        else
+            return false;
+    }
+
+    @Override
+    public String toString() {
+        String info = "Field{" +
+                "sizeX = " + (sizeX - 2) +
+                ", sizeY = " + (sizeY - 2) +
+                ", mines = " + mines + '}';
+
+        String lineVertical = "\u2502";
+
+        StringBuilder field = new StringBuilder();
+        String out = new String();
+
+        for (int y = 1; y < sizeY - 1; y++) {
+            for (int x = 1; x < sizeX - 1; x++) {
+                int cell = this.getCells()[x][y];
+
+                if (cell == 9) {
+                    out = "\033[30m" + "¤" + "\033[0m";
+                } else if (cell == 0) {
+                    out = "\033[37m" + cell + "\033[0m";
+                } else if (cell == 1) {
+                    out = "\033[34m" + cell + "\033[0m";
+                } else if (cell == 2) {
+                    out = "\033[32m" + cell + "\033[0m";
+                } else if (cell == 3) {
+                    out = "\033[31m" + cell + "\033[0m";
+                } else if (cell == 4) {
+                    out = "\033[35m" + cell + "\033[0m";
+                } else if (cell == 5) {
+                    out = "\033[36m" + cell + "\033[0m";
+                } else if (cell == 6) {
+                    out = "\033[33m" + cell + "\033[0m";
+                } else if (cell == 7) {
+                    out = "\033[30m" + cell + "\033[0m";
+                } else if (cell == 8) {
+                    out = "\033[31m" + cell + "\033[0m";
+                }
+
+                field.append(lineVertical + out);
+            }
+            field.append(lineVertical + "\n");
+        }
+
+        return info + "\n\n" + (field == null ? "" : field);
     }
 }
