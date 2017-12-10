@@ -1,6 +1,8 @@
 package miner;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.Random;
 
 /**
@@ -45,7 +47,7 @@ public class Field {
         this.mines = mines;
     }
 
-    private int[][] getCells() {
+    protected int[][] getCells() {
         return cells;
     }
 
@@ -155,11 +157,32 @@ public class Field {
      * @param y     координата по вертикали
      * @return
      */
-    Boolean isInField(Field field, int x, int y) {
-        if (x > 0 & x < field.sizeX & y > 0 & y < field.sizeY)
+    public static Boolean isInField(Field field, int x, int y) {
+        if (x > 0 & x < field.sizeX - 1 & y > 0 & y < field.sizeY - 1)
             return true;
         else
             return false;
+    }
+
+    /**
+     * Открывает целиком часть поля с "0"
+     * @param field
+     * @param x
+     * @param y
+     */
+    public static void openNullableCells(Field field, int x, int y) {
+        List<Integer> list = new ArrayList<>();
+
+        for (int i = -1; i < 1; i++) {
+            for (int j = -1; j < 1; j++) {
+                if (isInField(field, i, j)) {
+                    if (field.getCells()[x + j][y + i] == 0) {
+                        field.getCells()[x + j][y + i] = 10;
+                        //list.add();
+                    }
+                }
+            }
+        }
     }
 
     @Override
